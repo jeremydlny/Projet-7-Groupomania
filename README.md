@@ -4,6 +4,7 @@
 
 Démarage du Frontend
 
+### `cd .\frontend\`
 ### `npm start`
 
 ### **Fonctionnalité**
@@ -18,4 +19,5 @@ Démarage du Frontend
 
 Démarage du Backend
 
+### `cd .\Backend\`
 ### `nodemon server`
