@@ -4,9 +4,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Frontend
 
-Pour démarer le projet
+Pour démarer le Frontend
 
-### `cd Frontend`
+### `cd .\frontend\`
 ### `npm start`
 
 Runs the app in the development mode.\
