@@ -3,7 +3,7 @@
 ## Frontend
 
 Démarage du Frontend
-
+### `npm install`
 ### `cd .\frontend\`
 ### `npm start`
 
@@ -18,6 +18,6 @@ Démarage du Frontend
 ## Backend
 
 Démarage du Backend
-
+### `npm install`
 ### `cd .\Backend\`
 ### `nodemon server`
