@@ -4,14 +4,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Frontend
 
-Pour démarer le Frontend
+Démarage du Frontend
 
 ### `cd .\frontend\`
 ### `npm start`
 
 ## Backend
 
-Pour démarer le Backend
+Démarage du Backend
 
 ### `cd .\Backend\`
 ### `nodemon server`
