@@ -2,10 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Frontend
 
-In the project directory, you can run:
+Pour démarer le projet
 
+### `cd Frontend`
 ### `npm start`
 
 Runs the app in the development mode.\
