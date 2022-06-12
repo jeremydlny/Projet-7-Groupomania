@@ -86,7 +86,6 @@ const Dashboard = () => {
     // Fonction qui permet de modifier l'image du profil
     const onImageChange = async (event) => {
         if (event.target.files && event.target.files[0]) {
-            // setImagePreview(URL.createObjectURL(event.target.files[0]));
         }
         try {
             const { width, height } = await reactImageSize(URL.createObjectURL(event.target.files[0]));

@@ -169,9 +169,6 @@ const Dashboard = () => {
                                         </figure>
                                     </div>
                                     <div className="media-content">
-                                        {/* <p className={post.user.isAdmin == 1 ? ("title is-size-6 has-text-danger-dark mb-5") : ("title is-size-6 has-text-info-dark mb-5")}>
-                      {post.user.prenom} {post.user.nom} <span className="has-text-grey has-text-weight-light">{post.user.email}</span>
-                      </p> */}
                                         <p className="">
                                             <NavLink to={'../profile/' + post.userId}
                                                 className={post.user.isAdmin == 1 ? ("title is-size-6 has-text-danger-dark mb-1") : ("title is-size-6 has-text-info-dark mb-5")}>
