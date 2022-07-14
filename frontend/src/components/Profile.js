@@ -96,6 +96,15 @@ const Dashboard = () => {
         }
     }
 
+    // Fonction qui retourne user pour la suppression
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+    const userjwt = parseJwt(token);
+
     // Fonction de suppression d'un utilisateur
     const delUser = async (userId) => {
         try {
@@ -179,13 +188,14 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="content">
+                                    {post.postImg ? (<img src={'../images/media/' + post.postImg} alt='pp' />) : ('')}  
                                     <p>{post.postMsg}</p>
                                     {post.comments.length == 0 ? (<NavLink to={'../post/' + post.id} className="button is-small is-link is-light">Commenter</NavLink>)
                                         : (post.comments.length == 1 ?
                                             (<NavLink to={'../post/' + post.id} className="button is-small is-link is-light"><span className="has-text-weight-bold mr-1">{post.comments.length}</span>commentaire</NavLink>)
                                             : (<NavLink to={'../post/' + post.id} className="button is-small is-link is-light"><span className="has-text-weight-bold mr-1">{post.comments.length}</span>commentaires</NavLink>)
                                         )}
-                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : ('')}
+                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : post.userId == userjwt.userId ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : ('')}
                                 </div>
                             </div>
                         </div>

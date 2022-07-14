@@ -1,11 +1,11 @@
 import express from "express";
-import { getAPost, getMyPosts, getAllPosts, publishPost, deletePost } from "../controllers/Posts.js";
+import { getAPost, getMyPosts, getAllPosts, publishPost, uploadImage, deletePost } from "../controllers/Posts.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 
 const router = express.Router();
 
-router.post('/', publishPost);
+router.post('/', uploadImage, publishPost);
 router.get('/', verifyToken, getAllPosts);
 router.get('/id/:id', verifyToken, getAPost);
 router.get('/user/:id', verifyToken, getMyPosts);

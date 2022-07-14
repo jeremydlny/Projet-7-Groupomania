@@ -173,15 +173,12 @@ const Dashboard = () => {
                             <div className="field">
                                 <label htmlFor='userImg' className="label">Image: <small>(250x250 max)</small></label>
                                 <div className="controls">
-                                    <div className="file">
+                                    <div className="file is-danger is-outlined mt-4">
                                         <label className="file-label">
                                             <input name='userImg' type="file" className="file-input" onChange={onImageChange} />
                                             <span className="file-cta">
-                                                <span className="file-icon">
-                                                    <i className="fas fa-upload"></i>
-                                                </span>
                                                 <span className="file-label">
-                                                    Envoyez votre image…
+                                                    Image
                                                 </span>
                                             </span>
                                         </label>

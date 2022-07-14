@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
+// import reactImageSize from 'react-image-size';
 
 import TimeAgo from 'timeago-react';
 import * as timeago from 'timeago.js';
@@ -18,6 +19,7 @@ const Dashboard = () => {
     const [nom, setNom] = useState('');
     const [prenom, setPrenom] = useState('');
     const [userImg, setUserImg] = useState('');
+    const [postImg, setPostImg] = useState('');
     const [email, setEmail] = useState('');
     const [isAdmin, setAdmin] = useState('');
     const [token, setToken] = useState('');
@@ -83,19 +85,23 @@ const Dashboard = () => {
     });
 
     const onSubmit = async (data, { resetForm }) => {
-        console.log(data);
         try {
-            await axios.post('http://localhost:5000/posts', data);
-            setPosts(posts);
-            resetForm({ values: '' });
-            navigate("/home", { replace: true });
-            // window.location.reload();
+          const formData = new FormData;
+          formData.append('postMsg', data.postMsg);
+          if (postImg != userImg) {
+            formData.append('postImg', postImg)
+          }
+          await axios.post('http://localhost:5000/posts', formData);
+          setPosts(posts);
+          resetForm({ values: '' });
+          navigate("/home", { replace: true });
+          // window.location.reload();
         } catch (error) {
-            if (error.response) {
-                setMsg(error.response.data.msg);
-            }
+          if (error.response) {
+            setMsg(error.response.data.msg);
+          }
         }
-    };
+      };
 
     // Fonction de récupération des posts
     const getPosts = async () => {
@@ -120,9 +126,23 @@ const Dashboard = () => {
             console.log(error);
         }
     }
+
+    // Fonction qui retourne user pour la suppression
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+    const user = parseJwt(token);
+
     // Fonction LastSeen 
     const LastSeen = (date) => {
         return (<TimeAgo datetime={date} locale='fr' />);
+    }
+
+    const onImageChange = event => {
+        setPostImg(event.target.files[0])
     }
 
 
@@ -141,14 +161,14 @@ const Dashboard = () => {
                                 <div className="publish-post">
                                     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema} enableReinitialize={true}>
                                         <Form>
-                                            {msg ? (<p className="notification is-danger is-size-6 p-2 mt-1">{msg}</p>) : ("")}
                                             <div className="field">
                                                 <div className="controls grow-wrap">
                                                     <Field name="postMsg" as="textarea" placeholder={'Alors ' + prenom + ', quoi de neuf ?'} autoComplete="off" className="textarea is-dark-light" rows="2"></Field>
                                                 </div>
                                                 <ErrorMessage name="postMsg" component="p" className="notification is-danger is-italic is-light p-2 mt-2" />
                                             </div>
-                                            <button type='submit' className="button is-pulled-right is-link is-outlined mt-4">Envoyer</button>
+                                            <input name='postImg' type="file" onChange={onImageChange} />
+                                            <button type='submit' className="button is-pulled-right is-link is-outlined mt-4 ">Envoyer</button>
                                         </Form>
                                     </Formik>
                                 </div>
@@ -179,13 +199,14 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="content">
+                                    {post.postImg ? (<img src={'../images/media/' + post.postImg} alt='pp' />) : ('')}
                                     <p>{post.postMsg}</p>
                                     {post.comments.length == 0 ? (<NavLink to={'../post/' + post.id} className="button is-small is-link is-light">Commenter</NavLink>)
                                         : (post.comments.length == 1 ?
                                             (<NavLink to={'../post/' + post.id} className="button is-small is-link is-light"><span className="has-text-weight-bold mr-1">{post.comments.length}</span>commentaire</NavLink>)
                                             : (<NavLink to={'../post/' + post.id} className="button is-small is-link is-light"><span className="has-text-weight-bold mr-1">{post.comments.length}</span>commentaires</NavLink>)
                                         )}
-                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : ('')}
+                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : post.userId == user.userId ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : ('')}
                                 </div>
                             </div>
                         </div>

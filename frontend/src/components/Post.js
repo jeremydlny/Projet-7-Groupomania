@@ -25,6 +25,7 @@ const Dashboard = () => {
     const [comments, setComments] = useState([]);
     const [post, setPost] = useState([]);
     const [msg, setMsg] = useState('');
+    const [postImg, setPostImg] = useState('');
     const navigate = useNavigate();
 
     const { id } = useParams();
@@ -135,6 +136,15 @@ const Dashboard = () => {
         }
     }
 
+    // Fonction qui retourne user pour la suppression
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+    const user = parseJwt(token);
+
     // Fonction de suppression d'un commentaire
     const deleteCom = async (comId) => {
         try {
@@ -178,8 +188,9 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="content pb-5">
+                                    {post.postImg ? (<img src={'../images/media/' + post.postImg} alt='pp' />) : ('')}
                                     <p>{post.postMsg}</p>
-                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : ('')}
+                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : post.userId == user.userId ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deletePost(post.id) }}>Supprimer</button>) : ('')}
                                 </div>
                             </div>
                         </div>
@@ -236,7 +247,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className="content pb-5">
                                     <p>{com.commentMsg}</p>
-                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deleteCom(com.id) }}>Supprimer</button>) : ('')}
+                                    {isAdmin == 1 ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deleteCom(com.id) }}>Supprimer</button>) : com.userId == user.userId ? (<button type='button' className="button is-pulled-right is-danger is-outlined" onClick={() => { deleteCom(com.id) }}>Supprimer</button>) : ('')}
                                 </div>
                             </div>
                         </div>
