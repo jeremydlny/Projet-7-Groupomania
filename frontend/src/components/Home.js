@@ -93,6 +93,9 @@ const Dashboard = () => {
           }
           await axios.post('http://localhost:5000/posts', formData);
           setPosts(posts);
+          let inputvalueimg = document.getElementById("postimgid");
+            inputvalueimg.value = "";
+        setPostImg("")
           resetForm({ values: '' });
           navigate("/home", { replace: true });
           // window.location.reload();
